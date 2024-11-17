@@ -2,16 +2,33 @@
 //  ToDoListApp.swift
 //  ToDoList
 //
-//  Created by Halle Winters on 10/31/24.
+//  Created by Halle Black on 10/31/24.
 //
 
+
+
 import SwiftUI
+import Firebase
 
 @main
 struct ToDoListApp: App {
+    @StateObject private var authViewModel = AuthViewModel()
+
+    init() {
+        FirebaseApp.configure()
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Group {
+                if authViewModel.isUserAuthenticated {
+                    ContentView()
+                        .environmentObject(authViewModel)
+                } else {
+                    AuthView()
+                        .environmentObject(authViewModel)
+                }
+            }
         }
     }
 }
